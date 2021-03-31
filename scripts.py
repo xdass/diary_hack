@@ -2,7 +2,6 @@ from random import choice
 
 from datacenter.models import Schoolkid, Mark, Chastisement, Lesson, \
     Commendation
-from django.core.exceptions import ObjectDoesNotExist
 
 
 def fix_marks(full_name):
@@ -46,11 +45,12 @@ def create_commendation(full_name, lesson_title):
             print(f"{lesson_title} не найден в базе данных."
                   f" Проверьте правильность ввода")
             return
-        Commendation.objects.create(text=get_commedation(), schoolkid=schoolkid,
+        Commendation.objects.create(text=get_commedation(),
+                                    schoolkid=schoolkid,
                                     created=lesson.date,
                                     subject=lesson.subject,
                                     teacher=lesson.teacher)
-    except ObjectDoesNotExist:
+    except Schoolkid.DoesNotExist:
         print(f'{full_name} не найден в базе данных. Проверьте правильность '
               f'ввода')
     except Schoolkid.MultipleObjectsReturned:
